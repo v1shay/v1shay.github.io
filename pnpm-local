@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+set -euo pipefail
+
+ROOT_DIR="${0:A:h}"
+export PATH="$ROOT_DIR/.tooling/node-v24.14.0-darwin-arm64/bin:$ROOT_DIR/.tooling/pnpm-home/bin:$PATH"
+
+exec pnpm "$@"
