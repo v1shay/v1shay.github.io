@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vishay Agarwal</title>
+  <meta name="description" content="Vishay Agarwal: research, projects, outreach, and contact." />
+  <style>
+    :root {
+      --text: #222;
+      --muted: #666;
+      --faint: #888;
+      --line: #ddd;
+      --soft: #f7f7f7;
+      --link: #1772d0;
+      --max: 920px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.52;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    a:hover { text-decoration: underline; }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .wrap {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 58px;
+      font-size: 14px;
+    }
+
+    .brand {
+      font-weight: 600;
+      color: #111;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      color: var(--muted);
+    }
+
+    .nav-links a { color: #444; }
+
+    main {
+      padding: 34px 0 64px;
+    }
+
+    section {
+      padding: 34px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    section:last-child { border-bottom: 0; }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      font-size: 32px;
+      line-height: 1.1;
+      margin-bottom: 6px;
+      letter-spacing: -0.03em;
+      font-weight: 600;
+    }
+
+    h2 {
+      font-size: 21px;
+      line-height: 1.25;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+      font-weight: 600;
+    }
+
+    h3 {
+      font-size: 16px;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    p { margin-bottom: 10px; }
+
+    .small {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .label {
+      color: var(--faint);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 36px;
+      align-items: start;
+      padding-top: 24px;
+    }
+
+    .portrait {
+      width: 220px;
+      height: 220px;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      background: var(--soft);
+    }
+
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .hero-links a::after {
+      content: " →";
+      color: var(--faint);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 22px;
+    }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .entrimg {
+      width: 150px;
+      height: 96px;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      background: var(--soft);
+    }
+
+    .entry.compact {
+      grid-template-columns: 112px 1fr;
+      gap: 14px;
+    }
+
+    .entry.compact img {
+      width: 112px;
+      height: 74px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .badge {
+      display: inline-block;
+      color: #555;
+      background: #f2f2f2;
+      border: 1px solid #e0e0e0;
+      border-radius: 2px;
+      padding: 1px 6px;
+      font-size: 12px;
+      margin-left: 6px;
+      vertical-align: 1px;
+      font-weight: 400;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px 28px;
+    }
+
+    .project {
+      display: grid;
+      grid-template-columns: 108px 1fr;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .project img {
+      width: 108px;
+      height: 78px;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      background: var(--soft);
+    }
+
+    .project .empty {
+      width: 108px;
+      height: 78px;
+      border: 1px solid var(--line);
+      background: repeating-linear-gradient(-45deg, #fafafa, #fafafa 8px, #f2f2f2 8px, #f2f2f2 16px);
+    }
+
+    .project p, .entry p { margin-bottom: 6px; }
+
+    .inline-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px 14px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .inline-list li {
+      white-space: nowrap;
+    }
+
+    .fun-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px 26px;
+    }
+
+    .fun-item {
+      border-top: 1px solid #eee;
+      padding-top: 12px;
+    }
+
+    .contact-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 28px;
+      margin-top: 10px;
+    }
+
+    .footer-note {
+      color: var(--faint);
+      font-size: 12px;
+      margin-top: 28px;
+    }
+
+    @media (max-width: 760px) {
+      .nav { align-items: flex-start; flex-direction: column; padding: 14px 0; gap: 8px; }
+      .hero, .entry, .entry.compact, .project { grid-template-columns: 1fr; }
+      .portrait { width: 180px; height: 180px; }
+      .grid, .fun-grid, .contact-list { grid-template-columns: 1fr; }
+      .entry img, .entry.compact img, .project img, .project .empty { width: 100%; height: auto; aspect-ratio: 16 / 9; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#home">Vishay Agarwal</a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#research">Research</a>
+        <a href="#projects">Projects</a>
+        <a href="#outreach">Outreach</a>
+        <a href="#notes">Notes</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- page 1: hero -->
+    <section id="home" class="hero">
+      <img class="portrait" src="images/hero.jpeg" alt="Vishay Agarwal portrait" />
+      <div>
+        <div class="label">portfolio</div>
+        <h1>Vishay Agarwal</h1>
+        <p class="small">Freshman at Lynbrook High School. I build machine-learning systems, agent pipelines, developer tools, and outreach programs.</p>
+        <p>My work sits around applied AI, systems, data pipelines, and interfaces that turn research ideas into usable software. I am especially interested in compact ML models, explainability, vector representations, autonomous agents, and software that makes technical workflows easier to use.</p>
+        <div class="hero-links">
+          <a href="#research">research</a>
+          <a href="#projects">projects</a>
+          <a href="https://github.com/v1shay">github</a>
+          <a href="mailto:v.agrwl17@gmail.com">email</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- page 2: research / colleges -->
+    <section id="research">
+      <h2>Research</h2>
+      <div class="timeline">
+        <article class="entry">
+          <img src="images/berkeley-a.png" alt="Berkeley / LBNL project visual" />
+          <div>
+            <h3>Lawrence Berkeley National Laboratory at UC Berkeley <span class="badge">Machine Learning Intern</span></h3>
+            <p class="meta">Applied ML, data interpretation, and research tooling</p>
+            <p>Working on AI and machine-learning workflows for scientific data, with emphasis on data cleaning, interpretation, image-aware agents, and practical research pipelines.</p>
+            <p><a href="https://github.com/v1shay">GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <img src="images/ucsc-a.png" alt="AIEA Lab project visual" />
+          <div>
+            <h3>AIEA Lab at UC Santa Cruz <span class="badge">Engineering Intern</span></h3>
+            <p class="meta">Explainable AI and model engineering</p>
+            <p>Engineering work connected to explainable and accountable AI, including compact model pipelines and applied ML experimentation.</p>
+            <p><a href="https://github.com/v1shay/phyto-vision">GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <img src="images/substack.png" alt="Chapman Substack research crawler visual" />
+          <div>
+            <h3>Mathematical Foundations of Computer Science Lab, Chapman University <span class="badge">Research Intern</span></h3>
+            <p class="meta">Graph systems, ingestion, and classification</p>
+            <p>Building a research platform for Substack network analysis, including crawling, database ingestion, graph structure, and planned LLM-based classification.</p>
+            <p><a href="https://github.com/v1shay/substack">GitHub</a></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- page 3: projects -->
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="grid">
+        <article class="project">
+          <img src="images/image%20copy%2033.png" alt="Echo-OS visual" />
+          <div>
+            <h3>Echo-OS <span class="badge">1st @ ElevenLabs 2026</span></h3>
+            <p>Voice-first accessibility agent with STT/TTS pipelines, RAG memory, and computer-control tooling for blind users.</p>
+            <p><a href="https://github.com/v1shay/echo-OS">GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="project">
+          <img src="images/neuro.png" alt="Neuro-Sense visual" />
+          <div>
+            <h3>Neuro-Sense <span class="badge">Published & indexed</span></h3>
+            <p>Parkinson's speech-screening model with 91% accuracy and indexing across Google Scholar, OIPub, and ResearchGate.</p>
+            <p><a href="https://github.com/v1shay/neuro-sense">GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="project">
+          <img src="images/tomato.png" alt="Phyto-Vision visual" />
+          <div>
+            <h3>Phyto-Vision <span class="badge">Presented @ UCSC</span></h3>
+            <p>Plant-disease neural network trained on 395K+ images with 95%+ accuracy, presented for greenhouse use.</p>
+            <p><a href="https://github.com/v1shay/phyto-vision">GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="project">
+          <img src="images/other_projects/mllabs.gif" alt="ML-Labs demo" />
+          <div>
+            <h3>ML-Labs <span class="badge">LUMA finalist</span></h3>
+            <p>Autonomous research lab with 19 specialized agents across 8 lifecycle stages; top 1% of roughly 400 teams.</p>
+            <p><a href="https://github.com/v1shay/ml-labs">GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="project">
+          <img src="images/other_projects/image.png" alt="ArchLLM visual" />
+          <div>
+            <h3>ArchLLM <span class="badge">GPU architectures</span></h3>
+            <p>C++ memory simulator for long-context AI systems, modeling GPU memory pressure with 95%+ adherence and 30% lower HBM pressure.</p>
+            <p><a href="https://github.com/v1shay/archLLM-sim">GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="project">
+          <img src="images/other_projects/PNG%20image.png" alt="Vox visual" />
+          <div>
+            <h3>Vox <span class="badge">audio agents</span></h3>
+            <p>Bluetooth-integrated AI note-taking stack using real-time audio, Whisper transcription, and low-latency ambient capture.</p>
+            <p><a href="https://github.com/v1shay/vox-agent">GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="project">
+          <img src="images/sift-demo.gif" alt="Sift demo" />
+          <div>
+            <h3>Sift <span class="badge">3D GitHub map</span></h3>
+            <p>GitHub intelligence engine using linear algebra and Three.js to map repositories into a spatial interface.</p>
+            <p><a href="https://sift-opensource.vercel.app">Website</a></p>
+          </div>
+        </article>
+
+        <article class="project">
+          <img src="images/other_projects/image%20copy.png" alt="Sentinel-LLM chart" />
+          <div>
+            <h3>Sentinel-LLM <span class="badge">model eval</span></h3>
+            <p>Hallucination-detection benchmark pipeline with TF-IDF features, logistic regression, and evaluations against top AI models.</p>
+            <p><a href="https://github.com/v1shay/sentinel-LLM">GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="project">
+          <img src="images/other_projects/Adobe%20Express%20-%20neurallens%20(1).gif" alt="Neural-Lens demo" />
+          <div>
+            <h3>Neural-Lens <span class="badge">Chrome MV3</span></h3>
+            <p>Browser analysis layer using edge execution, JavaScript, and sub-500ms in-browser reasoning.</p>
+            <p><a href="https://github.com/v1shay/neural-lens">GitHub</a></p>
+          </div>
+        </article>
+
+        <article class="project">
+          <img src="images/other_projects/algotype.gif" alt="AlgoType demo" />
+          <div>
+            <h3>AlgoType <span class="badge">CP trainer</span></h3>
+            <p>Competitive-programming trainer with USACO/LeetCode prompts, custom syntax, and global leaderboards.</p>
+            <p><a href="https://algo-type.vercel.app">Website</a></p>
+          </div>
+        </article>
+
+        <article class="project">
+          <img src="images/other_projects/Convert%20to%20GIF%20project.gif" alt="Freelance development demo" />
+          <div>
+            <h3>Freelance Development <span class="badge">production work</span></h3>
+            <p>Local-business storefront work across Next.js, driving 100%+ increased traffic.</p>
+            <p><a href="https://taquizas-chapala.vercel.app">Website</a></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- page 4: outreach -->
+    <section id="outreach">
+      <h2>Outreach</h2>
+      <div class="timeline">
+        <article class="entry">
+          <img src="images/novastem2.jpeg" alt="NovaSTEM workshop" />
+          <div>
+            <h3>NovaSTEM</h3>
+            <p>Founded STEM outreach with Good Samaritan Preschool and Sunday Friends, delivering hands-on workshops to 350+ students.</p>
+            <p><a href="https://novastem.vercel.app">Website</a></p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <img src="images/art.jpeg" alt="Uplift Art Foundation cards" />
+          <div>
+            <h3>Uplift Art Foundation</h3>
+            <p>Led art outreach across 10 Bay Area schools; created and delivered 5,000+ cards for pediatric patients with national partner CFHK.</p>
+            <p><a href="https://uplift-art.vercel.app">Website</a></p>
+          </div>
+        </article>
+
+        <article class="entry">
+          <img src="images/image%20copy%2015.png" alt="CS4All visual" />
+          <div>
+            <h3>CS4All</h3>
+            <p>Mentored students in foundational computer-science concepts through hands-on coding and problem-solving sessions.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- page 5: notes / for fun -->
+    <section id="notes">
+      <h2>For fun</h2>
+      <div class="fun-grid">
+        <div class="fun-item">
+          <h3>FBLA</h3>
+          <p>Competed in Network Design events at the Future Business Leaders of America State Conference in Anaheim.</p>
+        </div>
+        <div class="fun-item">
+          <h3>GitHub Developer Program</h3>
+          <p>Accepted into the GitHub Developer Program for building GitHub Apps and integrations.</p>
+        </div>
+        <div class="fun-item">
+          <h3>Taekwondo</h3>
+          <p>Earned 1st-degree black belt under World Taekwondo Federation; mentored junior students in technique and sparring.</p>
+        </div>
+        <div class="fun-item">
+          <h3>Athletes4Others</h3>
+          <p>Basketball coach for students at local elementary schools in the Bay Area.</p>
+        </div>
+        <div class="fun-item">
+          <h3>Second brain</h3>
+          <p>Interested in vault systems like Obsidian as persistent context layers for AI agents.</p>
+        </div>
+        <div class="fun-item">
+          <h3>Sports</h3>
+          <p>Played for the Lynbrook High School boys basketball team, with a .750 win percentage across 24 games.</p>
+        </div>
+        <div class="fun-item">
+          <h3>Music</h3>
+          <p>Maintains Spotify playlists, including 4 public playlists with 90+ likes.</p>
+        </div>
+        <div class="fun-item">
+          <h3>Languages</h3>
+          <p>English, Hindi, and conversational Spanish.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- page 6: contact / GitHub -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Links and external pages.</p>
+      <div class="contact-list">
+        <a href="https://github.com/v1shay">GitHub</a>
+        <a href="mailto:v.agrwl17@gmail.com">Email</a>
+        <a href="https://devpost.com/v1shay/challenges">Hackathon portfolio</a>
+        <a href="https://docs.google.com/document/d/17_go6arOIviQ2X_M8XTwY88k7OC9EA-g/edit">Resume</a>
+        <a href="https://novastem.vercel.app">NovaSTEM</a>
+        <a href="https://uplift-art.vercel.app">Uplift Art Foundation</a>
+        <a href="https://www.lynbrookvikings.com/player/vishay-agarwal/">Basketball</a>
+        <a href="https://open.spotify.com/user/31rmdnittbsvohipqn7zdcjbj6ri">Spotify</a>
+      </div>
+      <p class="footer-note">Static HTML and CSS. No framework, no animation, no glass panels.</p>
+    </section>
+  </main>
+</body>
+</html>
