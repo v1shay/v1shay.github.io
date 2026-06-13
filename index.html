@@ -217,10 +217,15 @@
 
     .project img {
       width: 100%;
-      height: 180px;
-      object-fit: cover;
+      height: auto;
       border: 1px solid var(--line);
       background: var(--soft);
+    }
+
+    .project .neuro-img {
+      height: 180px;
+      object-fit: cover;
+      object-position: top;
     }
 
     .project .empty {
@@ -267,7 +272,7 @@
       margin-bottom: 12px;
     }
 
-    .hero p.small {
+    .hero p {
       color: var(--faint);
       font-style: italic;
       font-size: 15px;
@@ -316,8 +321,7 @@
       <img class="portrait" src="images/hero.jpeg" alt="Vishay Agarwal portrait" />
       <div>
         <h1>Vishay Agarwal</h1>
-        <p class="small">Hi, I'm Vishay, an incoming sophmore at Lynbrook High School</p>
-        <p>I'm interested in training machine learning models, building AI agents for hackathons, teaching STEM to younger students, and spending time listening to music, playing basketball, or experimenting with new software!</p>
+        <p>Hi, I'm Vishay, an incoming sophmore at Lynbrook High School! I'm interested in training machine learning models, building AI agents for hackathons, teaching STEM to younger students, and spending time listening to music, playing basketball, or experimenting with new software</p>
         <div class="hero-links">
           <a href="#research">research</a>
           <a href="#projects">projects</a>
@@ -377,7 +381,7 @@
         </article>
 
         <article class="project">
-          <img src="images/neuro.png" alt="Neuro-Sense visual" />
+          <img src="images/neuro.png" class="neuro-img" alt="Neuro-Sense visual" />
           <div>
             <h3>Neuro-Sense <span class="badge">Published & indexed</span></h3>
             <p>Parkinson's speech-screening model with 91% accuracy and indexing across Google Scholar, OIPub, and ResearchGate</p>
