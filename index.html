@@ -162,7 +162,7 @@
       display: grid;
       grid-template-columns: 150px 1fr;
       gap: 18px;
-      align-items: start;
+      align-items: center;
     }
 
     .entrimg {
@@ -204,28 +204,29 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 20px 28px;
+      grid-template-columns: 1fr;
+      gap: 32px;
     }
 
     .project {
       display: grid;
-      grid-template-columns: 108px 1fr;
-      gap: 14px;
+      grid-template-columns: 240px 1fr;
+      gap: 24px;
       min-width: 0;
+      align-items: center;
     }
 
     .project img {
-      width: 108px;
-      height: 78px;
+      width: 240px;
+      height: 160px;
       object-fit: cover;
       border: 1px solid var(--line);
       background: var(--soft);
     }
 
     .project .empty {
-      width: 108px;
-      height: 78px;
+      width: 240px;
+      height: 160px;
       border: 1px solid var(--line);
       background: repeating-linear-gradient(-45deg, #fafafa, #fafafa 8px, #f2f2f2 8px, #f2f2f2 16px);
     }
@@ -248,12 +249,21 @@
     .fun-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px 26px;
+      gap: 24px 26px;
     }
 
     .fun-item {
       border-top: 1px solid #eee;
-      padding-top: 12px;
+      padding-top: 16px;
+    }
+
+    .fun-item img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      margin-bottom: 12px;
+      background: var(--soft);
     }
 
     .contact-list {
@@ -339,7 +349,7 @@
           <div>
             <h3>Mathematical Foundations of Computer Science Lab, Chapman University <span class="badge">Research Intern</span></h3>
             <p class="meta">linear algebra, centrality and semantics</p>
-            <p>Interned at Chapman University’s Mathematical Foundations of Computer Science Lab, where I worked with Professor Alex Kurz on a Substack research platform using PostgreSQL-backed data pipelines, linear algebra, and centrality methods to analyze relationships between writers and ideas; improved pipeline performance by ~20% and ingestion capacity by ~30%</p>
+            <p>Interned at Chapman University's Mathematical Foundations of Computer Science Lab, where I worked with Professor Alex Kurz on a Substack research platform using PostgreSQL-backed data pipelines, linear algebra, and centrality methods to analyze relationships between writers and ideas; improved pipeline performance by ~20% and ingestion capacity by ~30%</p>
             <p><a href="https://github.com/v1shay/substack">GitHub</a></p>
           </div>
         </article>
@@ -348,13 +358,13 @@
 
     <!-- page 3: projects -->
     <section id="projects">
-      <h2>Projects</h2>
+      <h2>projects</h2>
       <div class="grid">
         <article class="project">
           <img src="images/image%20copy%2033.png" alt="Echo-OS visual" />
           <div>
             <h3>Echo-OS <span class="badge">1st @ ElevenLabs 2026</span></h3>
-            <p>Voice-first accessibility agent with STT/TTS pipelines, RAG memory, and computer-control tooling for blind users.</p>
+            <p>A computer-use agent that allows blind users to control their computer completely through voice</p>
             <p><a href="https://github.com/v1shay/echo-OS">GitHub</a></p>
           </div>
         </article>
@@ -363,7 +373,7 @@
           <img src="images/neuro.png" alt="Neuro-Sense visual" />
           <div>
             <h3>Neuro-Sense <span class="badge">Published & indexed</span></h3>
-            <p>Parkinson's speech-screening model with 91% accuracy and indexing across Google Scholar, OIPub, and ResearchGate.</p>
+            <p>Parkinson's speech-screening model with 91% accuracy and indexing across Google Scholar, OIPub, and ResearchGate</p>
             <p><a href="https://github.com/v1shay/neuro-sense">GitHub</a></p>
           </div>
         </article>
@@ -372,7 +382,7 @@
           <img src="images/tomato.png" alt="Phyto-Vision visual" />
           <div>
             <h3>Phyto-Vision <span class="badge">Presented @ UCSC</span></h3>
-            <p>Plant-disease neural network trained on 395K+ images with 95%+ accuracy, presented for greenhouse use.</p>
+            <p>A plant-disease neural network trained on 395K+ images with 95%+ accuracy, presented for greenhouse use</p>
             <p><a href="https://github.com/v1shay/phyto-vision">GitHub</a></p>
           </div>
         </article>
@@ -381,7 +391,7 @@
           <img src="images/other_projects/mllabs.gif" alt="ML-Labs demo" />
           <div>
             <h3>ML-Labs <span class="badge">LUMA finalist</span></h3>
-            <p>Autonomous research lab with 19 specialized agents across 8 lifecycle stages; top 1% of roughly 400 teams.</p>
+            <p>Autonomous research lab with 19 specialized agents across 8 lifecycle stages; top 1% of roughly 400 teams</p>
             <p><a href="https://github.com/v1shay/ml-labs">GitHub</a></p>
           </div>
         </article>
@@ -390,7 +400,7 @@
           <img src="images/other_projects/image.png" alt="ArchLLM visual" />
           <div>
             <h3>ArchLLM <span class="badge">GPU architectures</span></h3>
-            <p>C++ memory simulator for long-context AI systems, modeling GPU memory pressure with 95%+ adherence and 30% lower HBM pressure.</p>
+            <p>C++ memory compression for GPU memory pressure, achieved 95%+ adherence and 30% lower HBM pressure</p>
             <p><a href="https://github.com/v1shay/archLLM-sim">GitHub</a></p>
           </div>
         </article>
@@ -399,7 +409,7 @@
           <img src="images/other_projects/PNG%20image.png" alt="Vox visual" />
           <div>
             <h3>Vox <span class="badge">audio agents</span></h3>
-            <p>Bluetooth-integrated AI note-taking stack using real-time audio, Whisper transcription, and low-latency ambient capture.</p>
+            <p>Turn your AirPods into an AI-powered note-taking device</p>
             <p><a href="https://github.com/v1shay/vox-agent">GitHub</a></p>
           </div>
         </article>
@@ -407,8 +417,8 @@
         <article class="project">
           <img src="images/sift-demo.gif" alt="Sift demo" />
           <div>
-            <h3>Sift <span class="badge">3D GitHub map</span></h3>
-            <p>GitHub intelligence engine using linear algebra and Three.js to map repositories into a spatial interface.</p>
+            <h3>Sift <span class="badge">A 3D universe for GitHub</span></h3>
+            <p>GitHub intelligence engine using linear algebra and Three.js to map repositories into a spatial interface</p>
             <p><a href="https://sift-opensource.vercel.app">Website</a></p>
           </div>
         </article>
@@ -417,7 +427,7 @@
           <img src="images/other_projects/image%20copy.png" alt="Sentinel-LLM chart" />
           <div>
             <h3>Sentinel-LLM <span class="badge">model eval</span></h3>
-            <p>Hallucination-detection benchmark pipeline with TF-IDF features, logistic regression, and evaluations against top AI models.</p>
+            <p>Hallucination-detection benchmark pipeline with TF-IDF features, logistic regression, and evaluations against top AI models</p>
             <p><a href="https://github.com/v1shay/sentinel-LLM">GitHub</a></p>
           </div>
         </article>
@@ -426,7 +436,7 @@
           <img src="images/other_projects/Adobe%20Express%20-%20neurallens%20(1).gif" alt="Neural-Lens demo" />
           <div>
             <h3>Neural-Lens <span class="badge">Chrome MV3</span></h3>
-            <p>Browser analysis layer using edge execution, JavaScript, and sub-500ms in-browser reasoning.</p>
+            <p>Browser analysis layer using edge execution, JavaScript, and sub-500ms in-browser reasoning</p>
             <p><a href="https://github.com/v1shay/neural-lens">GitHub</a></p>
           </div>
         </article>
@@ -434,8 +444,8 @@
         <article class="project">
           <img src="images/other_projects/algotype.gif" alt="AlgoType demo" />
           <div>
-            <h3>AlgoType <span class="badge">CP trainer</span></h3>
-            <p>Competitive-programming trainer with USACO/LeetCode prompts, custom syntax, and global leaderboards.</p>
+            <h3>AlgoType <span class="badge">LeetCode practice</span></h3>
+            <p>Competitive-programming trainer with USACO/LeetCode questions, custom syntax, and global leaderboards</p>
             <p><a href="https://algo-type.vercel.app">Website</a></p>
           </div>
         </article>
@@ -444,7 +454,7 @@
           <img src="images/other_projects/Convert%20to%20GIF%20project.gif" alt="Freelance development demo" />
           <div>
             <h3>Freelance Development <span class="badge">production work</span></h3>
-            <p>Local-business storefront work across Next.js, driving 100%+ increased traffic.</p>
+            <p>Local-business storefront work across Next.js, driving 100%+ increased traffic</p>
             <p><a href="https://taquizas-chapala.vercel.app">Website</a></p>
           </div>
         </article>
@@ -459,7 +469,7 @@
           <img src="images/novastem2.jpeg" alt="NovaSTEM workshop" />
           <div>
             <h3>NovaSTEM</h3>
-            <p>Founded STEM outreach with Good Samaritan Preschool and Sunday Friends, delivering hands-on workshops to 350+ students.</p>
+            <p>Founded STEM outreach partnering with Good Samaritan Preschool and Sunday Friends, delivering hands-on workshops to 350+ students</p>
             <p><a href="https://novastem.vercel.app">Website</a></p>
           </div>
         </article>
@@ -468,7 +478,7 @@
           <img src="images/art.jpeg" alt="Uplift Art Foundation cards" />
           <div>
             <h3>Uplift Art Foundation</h3>
-            <p>Led art outreach across 10 Bay Area schools; created and delivered 5,000+ cards for pediatric patients with national partner CFHK.</p>
+            <p>Led art outreach across 10 Bay Area schools; created and delivered 5,000+ cards for pediatric patients with national partner CFHK</p>
             <p><a href="https://uplift-art.vercel.app">Website</a></p>
           </div>
         </article>
@@ -476,8 +486,8 @@
         <article class="entry">
           <img src="images/image%20copy%2015.png" alt="CS4All visual" />
           <div>
-            <h3>CS4All</h3>
-            <p>Mentored students in foundational computer-science concepts through hands-on coding and problem-solving sessions.</p>
+            <h3>CS4All Tutor</h3>
+            <p>Mentored students in foundational computer-science concepts through hands-on coding and problem-solving sessions</p>
           </div>
         </article>
       </div>
@@ -485,37 +495,45 @@
 
     <!-- page 5: notes / for fun -->
     <section id="notes">
-      <h2>For fun</h2>
+      <h2>notes</h2>
       <div class="fun-grid">
         <div class="fun-item">
+          <img src="images/other_projects/fbla_new.png" alt="FBLA" />
           <h3>FBLA</h3>
           <p>Competed in Network Design events at the Future Business Leaders of America State Conference in Anaheim.</p>
         </div>
         <div class="fun-item">
+          <img src="images/other_projects/image copy 2.png" alt="GitHub Developer Program" />
           <h3>GitHub Developer Program</h3>
           <p>Accepted into the GitHub Developer Program for building GitHub Apps and integrations.</p>
         </div>
         <div class="fun-item">
+          <img src="images/tkd2.jpeg" alt="Taekwondo" />
           <h3>Taekwondo</h3>
           <p>Earned 1st-degree black belt under World Taekwondo Federation; mentored junior students in technique and sparring.</p>
         </div>
         <div class="fun-item">
+          <img src="images/basketballteam.jpeg" alt="Athletes4Others" />
           <h3>Athletes4Others</h3>
           <p>Basketball coach for students at local elementary schools in the Bay Area.</p>
         </div>
         <div class="fun-item">
+          <img src="images/other_projects/obsidian.png" alt="Second brain" />
           <h3>Second brain</h3>
           <p>Interested in vault systems like Obsidian as persistent context layers for AI agents.</p>
         </div>
         <div class="fun-item">
+          <img src="images/IMG_6976.jpeg" alt="Sports" />
           <h3>Sports</h3>
           <p>Played for the Lynbrook High School boys basketball team, with a .750 win percentage across 24 games.</p>
         </div>
         <div class="fun-item">
+          <img src="images/other_projects/spotify.png" alt="Music" />
           <h3>Music</h3>
           <p>Maintains Spotify playlists, including 4 public playlists with 90+ likes.</p>
         </div>
         <div class="fun-item">
+          <img src="images/other_projects/image copy 3.png" alt="Languages" />
           <h3>Languages</h3>
           <p>English, Hindi, and conversational Spanish.</p>
         </div>
