@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Project — Vishay Agarwal</title>
 <script>(function(){try{var m=localStorage.getItem("v1shay-theme")||"auto";document.documentElement.dataset.themeMode=m;if(m==="light"||m==="dark")document.documentElement.dataset.theme=m;}catch(e){}})();</script>
-<link rel="stylesheet" href="./project.css" />
+<link rel="stylesheet" href="./project.css?v=20260912c" />
 </head>
 <body>
 <a class="corner-link back-link" href="./">← back</a>
 <a class="corner-link github-link" id="github-link" href="#" target="_blank" rel="noreferrer">gh</a>
 <main class="project-page">
-  <div class="ascii-stage"><pre class="ascii" id="project-art" aria-label="Project ASCII artwork"></pre></div>
+  <div class="ascii-stage" id="ascii-stage"><pre class="ascii" id="project-art" aria-label="Project ASCII artwork"></pre></div>
   <section class="project-meta"><h1 id="project-title"></h1><p id="project-description"></p></section>
 </main>
 <div class="theme-switcher" aria-label="Theme"><button type="button" data-theme-choice="auto">auto</button><button type="button" data-theme-choice="light">light</button><button type="button" data-theme-choice="dark">dark</button></div>
@@ -20,7 +20,41 @@
   var key=new URLSearchParams(location.search).get("p");
   var allowed={"archllm":1,"moonshot-robotics":1,"erevna":1,"ml-labs":1,"neuro-sense":1,"ido":1,"echo-os":1,"sift":1};
   if(!allowed[key]){location.replace("./");return;}
-  function unzip(v){var b=atob(v),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream("gzip"))).text();}
+
+  function unzip(v){
+    var b=atob(v),u=new Uint8Array(b.length);
+    for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
+    return new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream("gzip"))).text();
+  }
+
+  function normalizeArt(a){
+    var lines=a.replace(/\u2800/g," ").replace(/\r/g,"").split("\n");
+    while(lines.length&&!lines[0].trim())lines.shift();
+    while(lines.length&&!lines[lines.length-1].trim())lines.pop();
+    lines=lines.map(function(line){return line.replace(/ +$/,"");});
+    var lead=Infinity;
+    lines.forEach(function(line){
+      if(!line.trim())return;
+      var m=line.match(/^ */);
+      lead=Math.min(lead,m?m[0].length:0);
+    });
+    if(isFinite(lead)&&lead>0)lines=lines.map(function(line){return line.slice(lead);});
+    return lines.join("\n");
+  }
+
+  function fitArt(){
+    var art=document.getElementById("project-art");
+    art.style.fontSize="17px";
+    requestAnimationFrame(function(){
+      var w=art.scrollWidth,h=art.scrollHeight;
+      if(!w||!h)return;
+      var maxW=Math.min(window.innerWidth*.92,1280);
+      var maxH=window.innerHeight*(window.innerWidth<760?.58:.66);
+      var scale=Math.min(maxW/w,maxH/h,1);
+      art.style.fontSize=Math.max(5.5,17*scale)+"px";
+    });
+  }
+
   function show(){
     var p=window.PROJECT;
     document.title=p.title+" — Vishay Agarwal";
@@ -28,10 +62,22 @@
     document.getElementById("project-description").textContent=p.description;
     document.getElementById("github-link").href=p.github;
     document.getElementById("project-art").setAttribute("aria-label",p.title+" ASCII artwork");
-    if(p.art){document.getElementById("project-art").textContent=p.art;return;}
-    unzip(p.artGzip).then(function(a){document.getElementById("project-art").textContent=a.replace(/\n$/,"");}).catch(function(){document.getElementById("project-art").textContent="ASCII art unavailable.";});
+
+    function renderArt(a){
+      document.getElementById("project-art").textContent=normalizeArt(a);
+      if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitArt);else fitArt();
+    }
+
+    if(p.art){renderArt(p.art);return;}
+    unzip(p.artGzip).then(renderArt).catch(function(){document.getElementById("project-art").textContent="ASCII art unavailable.";});
   }
-  var s=document.createElement("script");s.src="./project-data/"+key+".js";s.onload=show;s.onerror=function(){document.getElementById("project-art").textContent="Project data unavailable.";};document.body.appendChild(s);
+
+  var s=document.createElement("script");
+  s.src="./project-data/"+key+".js?v=20260912c";
+  s.onload=show;
+  s.onerror=function(){document.getElementById("project-art").textContent="Project data unavailable.";};
+  document.body.appendChild(s);
+  window.addEventListener("resize",fitArt);
 })();
 </script>
 <script src="./theme.js"></script>
