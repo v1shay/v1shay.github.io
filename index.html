@@ -1,401 +1,46 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Vishay Agarwal</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-    <script src="./target/ico.js" type="text/javascript"></script>
-    <script>
-      (function () {
-        try {
-          var mode = localStorage.getItem("v1shay-theme") || "auto";
-          document.documentElement.dataset.themeMode = mode;
-          if (mode === "light" || mode === "dark") {
-            document.documentElement.dataset.theme = mode;
-          }
-        } catch (e) {}
-      })();
-    </script>
-
-    <script type="text/javascript">
-      var canvasWidth = 94;
-      var canvasHeight = 20;
-      var xOffset = 50;
-      var yOffset = canvasHeight / 2 - 2;
-      var joints = 1;
-      var scale = 20;
-
-      var activeIco;
-      var mouseEvent;
-      var mousedOver = false;
-      var stopRotating = false;
-
-      var gradientStart = "8D54FF";
-      var gradientEnd = "FF5471";
-
-      var parseHex = function (x) {
-        return [
-          parseInt(x.substring(0, 2), 16),
-          parseInt(x.substring(2, 4), 16),
-          parseInt(x.substring(4, 6), 16),
-        ];
-      };
-
-      Number.prototype.pad = function (size) {
-        var s = this.toString(16);
-        while (s.length < (size || 2)) {
-          s = "0" + s;
-        }
-        return s;
-      };
-
-      var hexGradient = function (start, end, position) {
-        var startRGB = parseHex(start);
-        var endRGB = parseHex(end);
-        var result = [];
-
-        for (var i = 0; i < 3; i++) {
-          result[i] = Math.round(
-            startRGB[i] + (endRGB[i] - startRGB[i]) * position
-          );
-        }
-
-        return result[0].pad() + result[1].pad() + result[2].pad();
-      };
-
-      var render = function () {
-        var rows = activeIco.RenderRows();
-        var html = [];
-
-        for (var i = 0; i < canvasHeight; i++) {
-          var color = hexGradient(
-            gradientStart,
-            gradientEnd,
-            i / canvasHeight
-          );
-
-          html.push(
-            '<span style="color:#' +
-              color +
-              ';">' +
-              rows[i] +
-              "</span><br>"
-          );
-        }
-
-        document.getElementById("canvas").innerHTML = html.join("");
-      };
-
-      window.onload = function () {
-        activeIco = ico.New(
-          canvasWidth,
-          canvasHeight,
-          xOffset,
-          yOffset,
-          joints,
-          scale
-        );
-
-        render();
-
-        window.setInterval(function () {
-          if (!mouseEvent) return;
-
-          var posX = mouseEvent.clientX;
-          var posY = mouseEvent.clientY;
-
-          var underMouse = document.elementFromPoint(posX, posY);
-
-          if (!underMouse || underMouse.tagName != "A") {
-            mousedOver = false;
-          }
-
-          var xChange = (posX - 400) / 30000;
-          var yChange = (posY / 30000) * -1;
-
-          xChange *= -1;
-          yChange *= -1;
-
-          if (mousedOver) {
-            xChange *= -1 * 5;
-            yChange *= -1 * 5;
-          }
-
-          if (!stopRotating) {
-            activeIco.RotateX(xChange);
-            activeIco.RotateY(yChange);
-          }
-
-          render();
-        }, 75);
-      };
-
-      var mouseOver = function () {
-        mousedOver = true;
-      };
-
-      var mouseOut = function () {
-        mousedOver = false;
-      };
-
-      var mouseDown = function (e) {
-        var url = e.currentTarget.getAttribute("href");
-
-        if (
-          e.ctrlKey ||
-          e.shiftKey ||
-          e.metaKey ||
-          (e.button && e.button == 1)
-        ) {
-          window.open(url, "_blank");
-          return;
-        }
-
-        stopRotating = true;
-        e.stopPropagation();
-      };
-
-      var mousePosition = function (e) {
-        mouseEvent = e;
-      };
-    </script>
-
-    <style type="text/css">
-      /*
-        The original site uses NType82Mono for text and Symbola for Braille.
-        The font binaries are intentionally not bundled here.
-        These @font-face rules load the public copies from the reference repo.
-      */
-      @font-face {
-        font-family: Braille;
-        src: url("https://raw.githubusercontent.com/bakks/bakks.github.io/master/Symbola.ttf");
-      }
-
-      @font-face {
-        font-family: NTypeMono;
-        src: url("https://raw.githubusercontent.com/bakks/bakks.github.io/master/NType82Mono-Regular.otf");
-      }
-
-      @font-face {
-        font-family: NType;
-        src: url("https://raw.githubusercontent.com/bakks/bakks.github.io/master/NType82-Regular.otf");
-      }
-
-      :root {
-        color-scheme: light dark;
-        --bg: #ffffff;
-        --fg: #333333;
-        --muted: #727272;
-        --control-border: rgba(0, 0, 0, 0.14);
-        --control-active: rgba(0, 0, 0, 0.08);
-      }
-
-      @media (prefers-color-scheme: dark) {
-        :root:not([data-theme]) {
-          --bg: #0b0b0b;
-          --fg: #d8d8d8;
-          --muted: #8b8b8b;
-          --control-border: rgba(255, 255, 255, 0.15);
-          --control-active: rgba(255, 255, 255, 0.09);
-        }
-      }
-
-      :root[data-theme="light"] {
-        --bg: #ffffff;
-        --fg: #333333;
-        --muted: #727272;
-        --control-border: rgba(0, 0, 0, 0.14);
-        --control-active: rgba(0, 0, 0, 0.08);
-      }
-
-      :root[data-theme="dark"] {
-        --bg: #0b0b0b;
-        --fg: #d8d8d8;
-        --muted: #8b8b8b;
-        --control-border: rgba(255, 255, 255, 0.15);
-        --control-active: rgba(255, 255, 255, 0.09);
-      }
-
-      body {
-        background-color: var(--bg);
-        color: var(--fg);
-        width: 100%;
-        height: 100%;
-        font-family: NTypeMono, Courier, monospace;
-        transition: background-color 120ms linear, color 120ms linear;
-      }
-
-      #canvas {
-        font-size: 0.9em;
-        letter-spacing: -0.15em;
-        font-family: Braille, "Apple Braille", "Segoe UI Symbol", monospace;
-        white-space: nowrap;
-      }
-
-      #links {
-        margin-top: -11em;
-        margin-left: 2em;
-        line-height: 2em;
-        font-size: 0.9em;
-        color: var(--fg);
-      }
-
-      a {
-        text-decoration: none;
-        text-shadow: none;
-        color: inherit;
-      }
-
-      a:hover {
-        text-decoration: underline;
-      }
-
-      * {
-        margin: 0px;
-        padding: 0px;
-      }
-
-      h3 {
-        font-family:
-          SF Pro Display,
-          SF Pro Icons,
-          Helvetica Neue,
-          Helvetica,
-          Arial,
-          sans-serif;
-        font-weight: 400;
-      }
-
-      .theme-switcher {
-        position: fixed;
-        right: 9px;
-        bottom: 8px;
-        z-index: 20;
-        display: flex;
-        gap: 5px;
-        align-items: center;
-        font-size: 8px;
-        line-height: 1;
-        opacity: 0.5;
-        user-select: none;
-      }
-
-      .theme-switcher:hover {
-        opacity: 0.9;
-      }
-
-      .theme-switcher button {
-        appearance: none;
-        border: 0;
-        border-bottom: 1px solid transparent;
-        background: transparent;
-        color: var(--muted);
-        font: inherit;
-        padding: 1px 0;
-        cursor: pointer;
-      }
-
-      .theme-switcher button[aria-pressed="true"] {
-        color: var(--fg);
-        border-bottom-color: currentColor;
-      }
-    </style>
-  </head>
-
-  <body onmousemove="mousePosition(event)">
-    <div id="canvas"></div>
-
-    <div id="links">
-      <a
-        class="toplink"
-        onmousedown="mouseDown(event)"
-        onmouseover="mouseOver()"
-        onmouseout="mouseOut()"
-        href="./resume.pdf"
-        target="_blank"
-      >resumé</a><br />
-
-      <a
-        class="toplink"
-        onmousedown="mouseDown(event)"
-        onmouseover="mouseOver()"
-        onmouseout="mouseOut()"
-        href="https://github.com/v1shay"
-      >github</a><br />
-
-      <a
-        class="toplink"
-        onmousedown="mouseDown(event)"
-        onmouseover="mouseOver()"
-        onmouseout="mouseOut()"
-        href="https://www.linkedin.com/in/vishay-agarwal-a194a6416/"
-      >linkedin</a><br />
-
-      <a
-        class="toplink"
-        onmousedown="mouseDown(event)"
-        onmouseover="mouseOver()"
-        onmouseout="mouseOut()"
-        href="https://devpost.com/v1shay/challenges"
-      >devpost</a><br />
-
-      <a
-        class="toplink"
-        onmousedown="mouseDown(event)"
-        onmouseover="mouseOver()"
-        onmouseout="mouseOut()"
-        href="mailto:v.agrwl17@gmail.com"
-      >v.agrwl17@gmail.com</a><br />
-
-      <br />
-      <br />
-
-      <h3>Recent Projects</h3>
-
-      <a href="./projects/archllm.html">
-        archLLM :: an LLM harness for direct runtime on NVIDIA H100s
-      </a>
-      <br />
-
-      <a href="./projects/moonshot-robotics.html">
-        Moonshot Robotics :: physics simulation, autonomous CAD, and RL
-      </a>
-      <br />
-
-      <a href="./projects/erevna.html">
-        Erevna :: autonomous research infrastructure
-      </a>
-      <br />
-
-      <a href="./projects/ml-labs.html">
-        ML-Labs :: autonomous multi-agent machine learning lab
-      </a>
-      <br />
-
-      <br />
-
-      <h3>Research</h3>
-
-      <span>
-        Berkeley Lab :: Machine Learning Researcher, Watershed physics
-      </span>
-      <br />
-
-      <span>
-        AIEA Lab :: Research Engineer Intern, XAI for Autonomous Vehicles
-      </span>
-      <br />
-
-      <a href="https://github.com/v1shay/substack-network">
-        Chapman Engineering :: Researcher, Linear Algebraic Modeling
-      </a>
-      <br />
-    </div>
-    <div class="theme-switcher" aria-label="Theme">
-      <button type="button" data-theme-choice="auto">auto</button>
-      <button type="button" data-theme-choice="light">light</button>
-      <button type="button" data-theme-choice="dark">dark</button>
-    </div>
-    <script src="./theme.js"></script>
-  </body>
+<head>
+<title>Vishay Agarwal</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="./target/ico.js" type="text/javascript"></script>
+<script>(function(){try{var m=localStorage.getItem("v1shay-theme")||"auto";document.documentElement.dataset.themeMode=m;if(m==="light"||m==="dark")document.documentElement.dataset.theme=m;}catch(e){}})();</script>
+<script>
+var canvasWidth=94,canvasHeight=20,xOffset=50,yOffset=canvasHeight/2-2,joints=1,scale=20,activeIco,mouseEvent,mousedOver=false,stopRotating=false,gradientStart="8D54FF",gradientEnd="FF5471";
+function parseHex(x){return[parseInt(x.substring(0,2),16),parseInt(x.substring(2,4),16),parseInt(x.substring(4,6),16)]}Number.prototype.pad=function(size){var s=this.toString(16);while(s.length<(size||2))s="0"+s;return s};function hexGradient(start,end,p){var a=parseHex(start),b=parseHex(end),r=[];for(var i=0;i<3;i++)r[i]=Math.round(a[i]+(b[i]-a[i])*p);return r[0].pad()+r[1].pad()+r[2].pad()}function render(){var rows=activeIco.RenderRows(),html=[];for(var i=0;i<canvasHeight;i++){var c=hexGradient(gradientStart,gradientEnd,i/canvasHeight);html.push('<span style="color:#'+c+';">'+rows[i]+'</span><br>')}document.getElementById("canvas").innerHTML=html.join("")}
+window.onload=function(){activeIco=ico.New(canvasWidth,canvasHeight,xOffset,yOffset,joints,scale);render();setInterval(function(){if(!mouseEvent)return;var x=mouseEvent.clientX,y=mouseEvent.clientY,u=document.elementFromPoint(x,y);if(!u||u.tagName!="A")mousedOver=false;var dx=(x-400)/30000*-1,dy=(y/30000)*-1*-1;if(mousedOver){dx*=-5;dy*=-5}if(!stopRotating){activeIco.RotateX(dx);activeIco.RotateY(dy)}render()},75)};
+function mouseOver(){mousedOver=true}function mouseOut(){mousedOver=false}function mouseDown(e){var url=e.currentTarget.getAttribute("href");if(e.ctrlKey||e.shiftKey||e.metaKey||(e.button&&e.button==1)){window.open(url,"_blank");return}stopRotating=true;e.stopPropagation()}function mousePosition(e){mouseEvent=e}
+</script>
+<style>
+@font-face{font-family:Braille;src:url("https://raw.githubusercontent.com/bakks/bakks.github.io/master/Symbola.ttf")}@font-face{font-family:NTypeMono;src:url("https://raw.githubusercontent.com/bakks/bakks.github.io/master/NType82Mono-Regular.otf")}@font-face{font-family:NType;src:url("https://raw.githubusercontent.com/bakks/bakks.github.io/master/NType82-Regular.otf")}:root{color-scheme:light dark;--bg:#fff;--fg:#333;--muted:#727272}@media(prefers-color-scheme:dark){:root:not([data-theme]){--bg:#0b0b0b;--fg:#d8d8d8;--muted:#8b8b8b}}:root[data-theme="light"]{--bg:#fff;--fg:#333;--muted:#727272}:root[data-theme="dark"]{--bg:#0b0b0b;--fg:#d8d8d8;--muted:#8b8b8b}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--fg);width:100%;min-height:100vh;font-family:NTypeMono,Courier,monospace;transition:background-color 120ms linear,color 120ms linear}#canvas{font-size:.9em;letter-spacing:-.15em;font-family:Braille,"Apple Braille","Segoe UI Symbol",monospace;white-space:nowrap}#links{margin-top:-11em;margin-left:2em;line-height:2em;font-size:.9em;color:var(--fg);width:max-content;max-width:calc(100vw - 3em)}a{text-decoration:none;text-shadow:none;color:inherit}a:hover{text-decoration:underline}h3{font-family:SF Pro Display,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:400}.projects-shell{position:relative;width:max-content;max-width:calc(100vw - 3em)}.projects-window{height:8em;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior:contain;scroll-snap-type:y mandatory;padding-right:14px}.projects-window::-webkit-scrollbar{display:none}.project-row{display:block;height:2em;line-height:2em;white-space:nowrap;scroll-snap-align:start}.projects-shell:after{content:"";pointer-events:none;position:absolute;left:0;right:0;bottom:0;height:1.55em;background:linear-gradient(to bottom,transparent 0%,var(--bg) 92%)}.theme-switcher{position:fixed;right:9px;bottom:8px;z-index:20;display:flex;gap:5px;align-items:center;font-size:8px;line-height:1;opacity:.5;user-select:none}.theme-switcher:hover{opacity:.9}.theme-switcher button{appearance:none;border:0;border-bottom:1px solid transparent;background:transparent;color:var(--muted);font:inherit;padding:1px 0;cursor:pointer}.theme-switcher button[aria-pressed="true"]{color:var(--fg);border-bottom-color:currentColor}
+</style>
+</head>
+<body onmousemove="mousePosition(event)">
+<div id="canvas"></div>
+<div id="links">
+<a class="toplink" onmousedown="mouseDown(event)" onmouseover="mouseOver()" onmouseout="mouseOut()" href="./resume.pdf" target="_blank">resumé</a><br />
+<a class="toplink" onmousedown="mouseDown(event)" onmouseover="mouseOver()" onmouseout="mouseOut()" href="https://github.com/v1shay">github</a><br />
+<a class="toplink" onmousedown="mouseDown(event)" onmouseover="mouseOver()" onmouseout="mouseOut()" href="https://www.linkedin.com/in/vishay-agarwal-a194a6416/">linkedin</a><br />
+<a class="toplink" onmousedown="mouseDown(event)" onmouseover="mouseOver()" onmouseout="mouseOut()" href="https://devpost.com/v1shay/challenges">devpost</a><br />
+<a class="toplink" onmousedown="mouseDown(event)" onmouseover="mouseOver()" onmouseout="mouseOut()" href="mailto:v.agrwl17@gmail.com">v.agrwl17@gmail.com</a><br /><br /><br />
+<h3>Recent Projects</h3>
+<div class="projects-shell"><div class="projects-window">
+<a class="project-row" href="./projects/archllm.html">archLLM :: an LLM harness for direct runtime on NVIDIA H100s</a>
+<a class="project-row" href="./projects/moonshot-robotics.html">Moonshot Robotics :: physics simulation, autonomous CAD, and RL</a>
+<a class="project-row" href="./projects/erevna.html">Erevna :: autonomous research infrastructure</a>
+<a class="project-row" href="./projects/ml-labs.html">ML-Labs :: autonomous multi-agent machine learning lab</a>
+<a class="project-row" href="./projects/neuro-sense.html">NeuroSense :: speech-based neurological risk estimation</a>
+<a class="project-row" href="./projects/ido.html">Idō :: universal agent harness for 3D design</a>
+<a class="project-row" href="./projects/echo-os.html">Echo-OS :: voice-first autonomous operating system</a>
+<a class="project-row" href="./projects/sift.html">Sift :: GitHub as a searchable 3D landscape</a>
+</div></div>
+<br />
+<h3>Research</h3>
+<span>Berkeley Lab :: Machine Learning Researcher, Watershed physics</span><br />
+<span>AIEA Lab :: Research Engineer Intern, XAI for Autonomous Vehicles</span><br />
+<a href="https://github.com/v1shay/substack-network">Chapman Engineering :: Researcher, Linear Algebraic Modeling</a><br />
+</div>
+<div class="theme-switcher" aria-label="Theme"><button type="button" data-theme-choice="auto">auto</button><button type="button" data-theme-choice="light">light</button><button type="button" data-theme-choice="dark">dark</button></div>
+<script src="./theme.js"></script>
+</body>
 </html>
