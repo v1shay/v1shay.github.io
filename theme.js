@@ -59,3 +59,5 @@
     });
   }
 })();
+
+// GitHub Pages deployment trigger.
