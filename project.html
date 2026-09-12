@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Project — Vishay Agarwal</title>
+    <script>
+      (function () {
+        try {
+          var mode = localStorage.getItem("v1shay-theme") || "auto";
+          document.documentElement.dataset.themeMode = mode;
+          if (mode === "light" || mode === "dark") {
+            document.documentElement.dataset.theme = mode;
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="stylesheet" href="./project.css" />
+  </head>
+  <body>
+    <a class="corner-link back-link" href="./">← back</a>
+    <a class="corner-link github-link" id="github-link" href="#" target="_blank" rel="noreferrer">github ↗</a>
+
+    <main class="project-page">
+      <div></div>
+      <div class="ascii-stage">
+        <pre class="ascii" id="project-art" aria-label="Project ASCII artwork"></pre>
+      </div>
+      <section class="project-meta">
+        <h1 id="project-title"></h1>
+        <p id="project-description"></p>
+      </section>
+    </main>
+
+    <div class="theme-switcher" aria-label="Theme">
+      <button type="button" data-theme-choice="auto">auto</button>
+      <button type="button" data-theme-choice="light">light</button>
+      <button type="button" data-theme-choice="dark">dark</button>
+    </div>
+
+    <script>
+      (function () {
+        var key = new URLSearchParams(window.location.search).get("p");
+        var allowed = {
+          "archllm": true,
+          "moonshot-robotics": true,
+          "erevna": true,
+          "ml-labs": true
+        };
+
+        if (!allowed[key]) {
+          window.location.replace("./");
+          return;
+        }
+
+        function decodeGzipBase64(value) {
+          var binary = atob(value);
+          var bytes = new Uint8Array(binary.length);
+          for (var i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+          }
+          var stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
+          return new Response(stream).text();
+        }
+
+        function renderProject() {
+          var project = window.PROJECT;
+          document.title = project.title + " — Vishay Agarwal";
+          document.getElementById("project-title").textContent = project.title;
+          document.getElementById("project-description").textContent = project.description;
+          document.getElementById("project-art").setAttribute("aria-label", project.title + " ASCII artwork");
+          document.getElementById("github-link").href = project.github;
+
+          decodeGzipBase64(project.artGzip)
+            .then(function (art) {
+              document.getElementById("project-art").textContent = art.replace(/\n$/, "");
+            })
+            .catch(function () {
+              document.getElementById("project-art").textContent = "ASCII art unavailable.";
+            });
+        }
+
+        var script = document.createElement("script");
+        script.src = "./project-data/" + key + ".js";
+        script.onload = renderProject;
+        script.onerror = function () {
+          document.getElementById("project-art").textContent = "Project data unavailable.";
+        };
+        document.body.appendChild(script);
+      })();
+    </script>
+    <script src="./theme.js"></script>
+  </body>
+</html>

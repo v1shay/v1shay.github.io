@@ -1,0 +1,187 @@
+@font-face {
+  font-family: NTypeMono;
+  src: url("https://raw.githubusercontent.com/bakks/bakks.github.io/master/NType82Mono-Regular.otf");
+}
+
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --fg: #333333;
+  --muted: #777777;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #0b0b0b;
+    --fg: #d8d8d8;
+    --muted: #8b8b8b;
+  }
+}
+
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --fg: #333333;
+  --muted: #777777;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0b0b0b;
+  --fg: #d8d8d8;
+  --muted: #8b8b8b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+body {
+  min-height: 100vh;
+  overflow: hidden;
+  font-family: NTypeMono, Courier, monospace;
+  transition: background-color 120ms linear, color 120ms linear;
+}
+
+.project-page {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  padding: 12px 14px 14px;
+}
+
+.corner-link {
+  position: fixed;
+  top: 10px;
+  z-index: 30;
+  font-size: 9px;
+  color: var(--muted);
+  text-decoration: none;
+  opacity: 0.72;
+}
+
+.corner-link:hover {
+  color: var(--fg);
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.back-link {
+  left: 12px;
+}
+
+.github-link {
+  right: 12px;
+}
+
+.ascii-stage {
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 22px 0 12px;
+}
+
+.ascii {
+  margin: 0;
+  max-width: none;
+  white-space: pre;
+  font-family: "Apple Braille", "Segoe UI Symbol", NTypeMono, monospace;
+  font-size: min(0.58vw, 0.62vh);
+  line-height: 0.95;
+  letter-spacing: 0;
+  font-variant-ligatures: none;
+  color: var(--fg);
+  opacity: 0.92;
+  text-align: left;
+  transform-origin: center;
+}
+
+.project-meta {
+  max-width: 620px;
+  padding: 0 0 2px 2px;
+}
+
+.project-meta h1 {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-bottom: 5px;
+}
+
+.project-meta p {
+  max-width: 560px;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.theme-switcher {
+  position: fixed;
+  right: 10px;
+  bottom: 8px;
+  z-index: 30;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 8px;
+  line-height: 1;
+  opacity: 0.5;
+  user-select: none;
+}
+
+.theme-switcher:hover {
+  opacity: 0.9;
+}
+
+.theme-switcher button {
+  appearance: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  padding: 1px 0;
+  cursor: pointer;
+}
+
+.theme-switcher button[aria-pressed="true"] {
+  color: var(--fg);
+  border-bottom-color: currentColor;
+}
+
+@media (max-width: 760px) {
+  .project-page {
+    padding: 10px;
+  }
+
+  .ascii-stage {
+    justify-content: flex-start;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ascii {
+    font-size: 4px;
+    flex: none;
+  }
+
+  .project-meta {
+    padding-bottom: 16px;
+  }
+
+  .project-meta p {
+    padding-right: 68px;
+  }
+}
