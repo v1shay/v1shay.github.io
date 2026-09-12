@@ -1,582 +1,313 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vishay Agarwal</title>
-  <meta name="description" content="Vishay Agarwal: research, projects, outreach, and contact." />
-  <style>
-    :root {
-      --text: #222;
-      --muted: #666;
-      --faint: #888;
-      --line: #ddd;
-      --soft: #f7f7f7;
-      --link: #1772d0;
-      --max: 920px;
-    }
+<html>
+  <head>
+    <title>Vishay Agarwal</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    * { box-sizing: border-box; }
+    <script src="./target/ico.js" type="text/javascript"></script>
 
-    body {
-      margin: 0;
-      padding: 0;
-      background: #fff;
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      font-size: 15px;
-      line-height: 1.52;
-    }
+    <script type="text/javascript">
+      var canvasWidth = 94;
+      var canvasHeight = 20;
+      var xOffset = 50;
+      var yOffset = canvasHeight / 2 - 2;
+      var joints = 1;
+      var scale = 20;
 
-    a {
-      color: var(--link);
-      text-decoration: none;
-    }
+      var activeIco;
+      var mouseEvent;
+      var mousedOver = false;
+      var stopRotating = false;
 
-    a:hover { text-decoration: underline; }
+      var gradientStart = "8D54FF";
+      var gradientEnd = "FF5471";
 
-    img {
-      display: block;
-      max-width: 100%;
-    }
+      var parseHex = function (x) {
+        return [
+          parseInt(x.substring(0, 2), 16),
+          parseInt(x.substring(2, 4), 16),
+          parseInt(x.substring(4, 6), 16),
+        ];
+      };
 
-    .wrap {
-      width: min(var(--max), calc(100% - 32px));
-      margin: 0 auto;
-    }
+      Number.prototype.pad = function (size) {
+        var s = this.toString(16);
+        while (s.length < (size || 2)) {
+          s = "0" + s;
+        }
+        return s;
+      };
 
-    header {
-      border-bottom: 1px solid var(--line);
-      background: #fff;
-    }
+      var hexGradient = function (start, end, position) {
+        var startRGB = parseHex(start);
+        var endRGB = parseHex(end);
+        var result = [];
 
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      min-height: 58px;
-      font-size: 14px;
-    }
+        for (var i = 0; i < 3; i++) {
+          result[i] = Math.round(
+            startRGB[i] + (endRGB[i] - startRGB[i]) * position
+          );
+        }
 
-    .brand {
-      font-weight: 600;
-      color: #111;
-      letter-spacing: -0.01em;
-    }
+        return result[0].pad() + result[1].pad() + result[2].pad();
+      };
 
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      color: var(--muted);
-    }
+      var render = function () {
+        var rows = activeIco.RenderRows();
+        var html = [];
 
-    .nav-links a { color: #444; }
+        for (var i = 0; i < canvasHeight; i++) {
+          var color = hexGradient(
+            gradientStart,
+            gradientEnd,
+            i / canvasHeight
+          );
 
-    main {
-      padding: 34px 0 64px;
-    }
+          html.push(
+            '<span style="color:#' +
+              color +
+              ';">' +
+              rows[i] +
+              "</span><br>"
+          );
+        }
 
-    section {
-      padding: 34px 0;
-      border-bottom: 1px solid var(--line);
-    }
+        document.getElementById("canvas").innerHTML = html.join("");
+      };
 
-    section:last-child { border-bottom: 0; }
+      window.onload = function () {
+        activeIco = ico.New(
+          canvasWidth,
+          canvasHeight,
+          xOffset,
+          yOffset,
+          joints,
+          scale
+        );
 
-    h1, h2, h3, p { margin-top: 0; }
+        render();
 
-    h1 {
-      font-size: 32px;
-      line-height: 1.1;
-      margin-bottom: 6px;
-      letter-spacing: -0.03em;
-      font-weight: 600;
-    }
+        window.setInterval(function () {
+          if (!mouseEvent) return;
 
-    h2 {
-      font-size: 21px;
-      line-height: 1.25;
-      margin-bottom: 20px;
-      letter-spacing: -0.02em;
-      font-weight: 600;
-    }
+          var posX = mouseEvent.clientX;
+          var posY = mouseEvent.clientY;
 
-    h3 {
-      font-size: 16px;
-      margin-bottom: 4px;
-      font-weight: 600;
-    }
+          var underMouse = document.elementFromPoint(posX, posY);
 
-    p { margin-bottom: 10px; }
+          if (!underMouse || underMouse.tagName != "A") {
+            mousedOver = false;
+          }
 
-    .small {
-      color: var(--muted);
-      font-size: 14px;
-    }
+          var xChange = (posX - 400) / 30000;
+          var yChange = (posY / 30000) * -1;
 
-    .label {
-      color: var(--faint);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
-    }
+          xChange *= -1;
+          yChange *= -1;
 
-    .hero {
-      display: grid;
-      grid-template-columns: 230px 1fr;
-      gap: 36px;
-      align-items: start;
-      padding-top: 24px;
-    }
+          if (mousedOver) {
+            xChange *= -1 * 5;
+            yChange *= -1 * 5;
+          }
 
-    .portrait {
-      width: 220px;
-      height: 220px;
-      object-fit: cover;
-      border: 1px solid var(--line);
-      background: var(--soft);
-    }
+          if (!stopRotating) {
+            activeIco.RotateX(xChange);
+            activeIco.RotateY(yChange);
+          }
 
-    .hero-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 16px;
-      font-size: 14px;
-    }
+          render();
+        }, 75);
+      };
 
-    .hero-links a::after {
-      content: " →";
-      color: var(--faint);
-    }
+      var mouseOver = function () {
+        mousedOver = true;
+      };
 
-    .timeline {
-      display: grid;
-      gap: 22px;
-    }
+      var mouseOut = function () {
+        mousedOver = false;
+      };
 
-    .entry {
-      display: grid;
-      grid-template-columns: 150px 1fr;
-      gap: 18px;
-      align-items: center;
-    }
+      var mouseDown = function (e) {
+        var url = e.currentTarget.getAttribute("href");
 
-    .entrimg {
-      width: 150px;
-      height: 96px;
-      object-fit: cover;
-      border: 1px solid var(--line);
-      background: var(--soft);
-    }
+        if (
+          e.ctrlKey ||
+          e.shiftKey ||
+          e.metaKey ||
+          (e.button && e.button == 1)
+        ) {
+          window.open(url, "_blank");
+          return;
+        }
 
-    .entry.compact {
-      grid-template-columns: 112px 1fr;
-      gap: 14px;
-    }
+        stopRotating = true;
+        e.stopPropagation();
+      };
 
-    .entry.compact img {
-      width: 112px;
-      height: 74px;
-    }
+      var mousePosition = function (e) {
+        mouseEvent = e;
+      };
+    </script>
 
-    .meta {
-      color: var(--muted);
-      font-size: 14px;
-      margin-bottom: 5px;
-      font-style: italic;
-    }
+    <style type="text/css">
+      /*
+        The original site uses NType82Mono for text and Symbola for Braille.
+        The font binaries are intentionally not bundled here.
+        These @font-face rules load the public copies from the reference repo.
+      */
+      @font-face {
+        font-family: Braille;
+        src: url("https://raw.githubusercontent.com/bakks/bakks.github.io/master/Symbola.ttf");
+      }
 
-    .badge {
-      display: inline-block;
-      color: #555;
-      background: #f2f2f2;
-      border: 1px solid #e0e0e0;
-      border-radius: 2px;
-      padding: 1px 6px;
-      font-size: 12px;
-      margin-left: 6px;
-      vertical-align: 1px;
-      font-weight: 400;
-    }
+      @font-face {
+        font-family: NTypeMono;
+        src: url("https://raw.githubusercontent.com/bakks/bakks.github.io/master/NType82Mono-Regular.otf");
+      }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 32px 28px;
-    }
+      @font-face {
+        font-family: NType;
+        src: url("https://raw.githubusercontent.com/bakks/bakks.github.io/master/NType82-Regular.otf");
+      }
 
-    .project {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      min-width: 0;
-    }
+      body {
+        background-color: #ffffff;
+        width: 100%;
+        height: 100%;
+        font-family: NTypeMono, Courier, monospace;
+      }
 
-    .project img {
-      width: 100%;
-      height: auto;
-      border: 1px solid var(--line);
-      background: var(--soft);
-    }
+      #canvas {
+        font-size: 0.9em;
+        letter-spacing: -0.15em;
+        font-family: Braille, "Apple Braille", "Segoe UI Symbol", monospace;
+        white-space: nowrap;
+      }
 
-    .project .neuro-img {
-      height: 280px;
-      object-fit: cover;
-      object-position: top;
-    }
+      #links {
+        margin-top: -11em;
+        margin-left: 2em;
+        line-height: 2em;
+        font-size: 0.9em;
+        color: #333;
+      }
 
-    .project .empty {
-      width: 100%;
-      height: 180px;
-      border: 1px solid var(--line);
-      background: repeating-linear-gradient(-45deg, #fafafa, #fafafa 8px, #f2f2f2 8px, #f2f2f2 16px);
-    }
+      a {
+        text-decoration: none;
+        text-shadow: none;
+        color: inherit;
+      }
 
-    .project p, .entry p { margin-bottom: 6px; }
+      a:hover {
+        text-decoration: underline;
+      }
 
-    .inline-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 9px 14px;
-      padding: 0;
-      margin: 0;
-      list-style: none;
-    }
+      * {
+        margin: 0px;
+        padding: 0px;
+      }
 
-    .inline-list li {
-      white-space: nowrap;
-    }
+      h3 {
+        font-family:
+          SF Pro Display,
+          SF Pro Icons,
+          Helvetica Neue,
+          Helvetica,
+          Arial,
+          sans-serif;
+        font-weight: 400;
+      }
+    </style>
+  </head>
 
-    .fun-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 24px 26px;
-    }
+  <body onmousemove="mousePosition(event)">
+    <div id="canvas"></div>
 
-    .fun-item {
-      border-top: 1px solid #eee;
-      padding-top: 16px;
-    }
+    <div id="links">
+      <a
+        class="toplink"
+        onmousedown="mouseDown(event)"
+        onmouseover="mouseOver()"
+        onmouseout="mouseOut()"
+        href="./resume.pdf"
+        target="_blank"
+      >resumé</a><br />
 
-    .fun-item img {
-      display: block;
-      width: auto;
-      height: auto;
-      max-width: 110px;
-      max-height: 85px;
-      object-fit: contain;
-      border: 0;
-      margin-bottom: 12px;
-    }
+      <a
+        class="toplink"
+        onmousedown="mouseDown(event)"
+        onmouseover="mouseOver()"
+        onmouseout="mouseOut()"
+        href="https://github.com/v1shay"
+      >github</a><br />
 
-    .hero p {
-      color: var(--faint);
-      font-style: italic;
-      font-size: 15px;
-      margin-bottom: 12px;
-    }
+      <a
+        class="toplink"
+        onmousedown="mouseDown(event)"
+        onmouseover="mouseOver()"
+        onmouseout="mouseOut()"
+        href="https://www.linkedin.com/in/vishay-agarwal-a194a6416/"
+      >linkedin</a><br />
 
-    .contact-list {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px 28px;
-      margin-top: 10px;
-    }
+      <a
+        class="toplink"
+        onmousedown="mouseDown(event)"
+        onmouseover="mouseOver()"
+        onmouseout="mouseOut()"
+        href="https://devpost.com/v1shay/challenges"
+      >devpost</a><br />
 
-    .footer-note {
-      color: var(--faint);
-      font-size: 12px;
-      margin-top: 28px;
-    }
+      <a
+        class="toplink"
+        onmousedown="mouseDown(event)"
+        onmouseover="mouseOver()"
+        onmouseout="mouseOut()"
+        href="mailto:v.agrwl17@gmail.com"
+      >v.agrwl17@gmail.com</a><br />
 
-    @media (max-width: 760px) {
-      .nav { align-items: flex-start; flex-direction: column; padding: 14px 0; gap: 8px; }
-      .hero, .entry, .entry.compact, .project { grid-template-columns: 1fr; }
-      .portrait { width: 180px; height: 180px; }
-      .grid, .fun-grid, .contact-list { grid-template-columns: 1fr; }
-      .entry img, .entry.compact img, .project img, .project .empty { width: 100%; height: auto; aspect-ratio: 16 / 9; }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="wrap nav">
-      <a class="brand" href="#home">Vishay Agarwal</a>
-      <nav class="nav-links" aria-label="Primary navigation">
-        <a href="#research">research</a>
-        <a href="#projects">projects</a>
-        <a href="#outreach">outreach</a>
-        <a href="#notes">notes</a>
-        <a href="#contact">contact</a>
-      </nav>
+      <br />
+      <br />
+
+      <h3>Recent Projects</h3>
+
+      <a href="https://github.com/v1shay/archLLM">
+        archLLM :: an LLM harness for direct runtime on NVIDIA H100s
+      </a>
+      <br />
+
+      <a href="https://github.com/v1shay/moonshot-robotics">
+        Moonshot Robotics :: physics simulation, autonomous CAD, and RL
+      </a>
+      <br />
+
+      <a href="https://github.com/v1shay/erevna">
+        Erevna :: autonomous research infrastructure
+      </a>
+      <br />
+
+      <a href="https://github.com/v1shay/ml-labs">
+        ML-Labs :: autonomous multi-agent machine learning lab
+      </a>
+      <br />
+
+      <br />
+
+      <h3>Research</h3>
+
+      <span>
+        Berkeley Lab :: Machine Learning Researcher, Watershed physics
+      </span>
+      <br />
+
+      <span>
+        AIEA Lab :: Research Engineer Intern, XAI for Autonomous Vehicles
+      </span>
+      <br />
+
+      <a href="https://github.com/v1shay/substack-network">
+        Chapman Engineering :: Researcher, Linear Algebraic Modeling
+      </a>
+      <br />
     </div>
-  </header>
-
-  <main class="wrap">
-    <!-- page 1: hero -->
-    <section id="home" class="hero">
-      <img class="portrait" src="images/hero.jpeg" alt="Vishay Agarwal portrait" />
-      <div>
-        <h1>Vishay Agarwal</h1>
-        <p>Hi, I'm Vishay, an incoming sophmore at Lynbrook High School! I'm interested in training machine learning models, building AI agents for hackathons, teaching STEM to younger students, and spending time listening to music, playing basketball, or experimenting with new software</p>
-        <div class="hero-links">
-          <a href="#research">research</a>
-          <a href="#projects">projects</a>
-          <a href="https://github.com/v1shay">github</a>
-          <a href="mailto:v.agrwl17@gmail.com">email</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- page 2: research / colleges -->
-    <section id="research">
-      <h2>Research</h2>
-      <div class="timeline">
-        <article class="entry">
-          <img src="images/berkeley-a.png" alt="Berkeley / LBNL project visual" />
-          <div>
-            <h3>Lawrence Berkeley National Laboratory @ UC Berkeley <span class="badge">Machine Learning Intern</span></h3>
-            <p class="meta">fluid mechanics and convelutional/graph neural networks </p>
-            <p>I'm currently working as a Physics x Machine Learning Intern at the Watershed SFA lab at LBNL, building multi-modal agents for hydrological data intepretation and machine learning models with integrated physics</p>
-            <p><a href="https://github.com/v1shay">GitHub</a></p>
-          </div>
-        </article>
-
-        <article class="entry">
-          <img src="images/ucsc-a.png" alt="AIEA Lab project visual" />
-          <div>
-            <h3>AIEA Lab @ UC Santa Cruz <span class="badge">Engineering Intern</span></h3>
-            <p class="meta">XAI and model engineering</p>
-            <p>I'm a Machine Learning Intern at the Artificial Intelligence Explainability and Accountability Lab at UCSC, where I train and develop compact XAI models for scientific machine learning. I’m optimizing neural architectures for neuro-symbolic AI systems reaching 95–98%+ accuracy and training 50K–150K+ parameter deep learning models through Python/Jupyter pipelines</p>
-            <p><a href="https://github.com/v1shay/phyto-vision">GitHub</a></p>
-          </div>
-        </article>
-
-        <article class="entry">
-          <img src="images/substack.png" alt="Chapman Substack research crawler visual" />
-          <div>
-            <h3>Mathematical Foundations of Computer Science Lab, Chapman University <span class="badge">Research Intern</span></h3>
-            <p class="meta">linear algebra, centrality and semantics</p>
-            <p>Interned at Chapman University's Mathematical Foundations of Computer Science Lab, where I worked with Professor Alex Kurz on a Substack research platform using PostgreSQL-backed data pipelines, linear algebra, and centrality methods to analyze relationships between writers and ideas; improved pipeline performance by ~20% and ingestion capacity by ~30%</p>
-            <p><a href="https://github.com/v1shay/substack">GitHub</a></p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- page 3: projects -->
-    <section id="projects">
-      <h2>projects</h2>
-      <div class="grid">
-        <article class="project">
-          <img src="images/image%20copy%2033.png" alt="Echo-OS visual" />
-          <div>
-            <h3>Echo-OS <span class="badge">1st @ ElevenLabs 2026</span></h3>
-            <p>A computer-use agent that allows blind users to control their computer completely through voice</p>
-            <p><a href="https://github.com/v1shay/echo-OS">GitHub</a></p>
-          </div>
-        </article>
-
-        <article class="project">
-          <img src="images/neuro.png" class="neuro-img" alt="Neuro-Sense visual" />
-          <div>
-            <h3>Neuro-Sense <span class="badge">Published & indexed</span></h3>
-            <p>Parkinson's speech-screening model with 91% accuracy and indexing across Google Scholar, OIPub, and ResearchGate</p>
-            <p><a href="https://github.com/v1shay/neuro-sense">GitHub</a></p>
-          </div>
-        </article>
-
-        <article class="project">
-          <img src="images/tomato.png" alt="Phyto-Vision visual" />
-          <div>
-            <h3>Phyto-Vision <span class="badge">Presented @ UCSC</span></h3>
-            <p>A plant-disease neural network trained on 395K+ images with 95%+ accuracy, presented to the head of the Loik Labaratory for use in their greenhouses</p>
-            <p><a href="https://github.com/v1shay/phyto-vision">GitHub</a></p>
-          </div>
-        </article>
-
-        <article class="project">
-          <img src="images/other_projects/mllabs.gif" alt="ML-Labs demo" />
-          <div>
-            <h3>ML-Labs <span class="badge">Finalist @ LUMA Hacks</span></h3>
-            <p>Autonomous research lab with 19 specialized agents across 8 lifecycle stages; top 1% of roughly 400 teams</p>
-            <p><a href="https://github.com/v1shay/ml-labs">GitHub</a></p>
-          </div>
-        </article>
-
-        <article class="project">
-          <img src="images/other_projects/image.png" alt="ArchLLM visual" />
-          <div>
-            <h3>ArchLLM <span class="badge">GPU architectures</span></h3>
-            <p>C++ memory compression for GPU memory pressure, achieved 95%+ adherence and 30% lower HBM pressure</p>
-            <p><a href="https://github.com/v1shay/archLLM-sim">GitHub</a></p>
-          </div>
-        </article>
-
-        <article class="project">
-          <img src="images/other_projects/PNG%20image.png" alt="Vox visual" />
-          <div>
-            <h3>Vox <span class="badge">audio agents</span></h3>
-            <p>Turn your AirPods into an AI-powered note-taking device</p>
-            <p><a href="https://github.com/v1shay/vox-agent">GitHub</a></p>
-          </div>
-        </article>
-
-        <article class="project">
-          <img src="images/sift-demo.gif" alt="Sift demo" />
-          <div>
-            <h3>Sift <span class="badge">A 3D universe for GitHub</span></h3>
-            <p>GitHub intelligence engine using linear algebra and Three.js to map repositories into a spatial interface</p>
-            <p><a href="https://sift-opensource.vercel.app">Website</a></p>
-          </div>
-        </article>
-
-        <article class="project">
-          <img src="images/eco-scan.png" alt="Eco Scan visual" />
-          <div>
-            <h3>Eco Scan <span class="badge">Top 5 @ EcoHacks</span></h3>
-            <p>A biodiversity intelligence platform monitoring species risk across 400 undocumentad animals on the California Coast</p>
-            <p><a href="https://github.com/v1shay/eco-scan">GitHub</a></p>
-          </div>
-        </article>
-
-        <article class="project">
-          <img src="images/other_projects/image%20copy.png" alt="Sentinel-LLM chart" />
-          <div>
-            <h3>Sentinel-LLM <span class="badge">model eval</span></h3>
-            <p>Hallucination-detection benchmark pipeline with TF-IDF features, logistic regression, and evaluations against top AI models</p>
-            <p><a href="https://github.com/v1shay/sentinel-LLM">GitHub</a></p>
-          </div>
-        </article>
-
-        <article class="project">
-          <img src="images/other_projects/Adobe%20Express%20-%20neurallens%20(1).gif" alt="Neural-Lens demo" />
-          <div>
-            <h3>Neural-Lens <span class="badge">Chrome MV3</span></h3>
-            <p>Browser analysis layer using edge execution, JavaScript, and sub-500ms in-browser reasoning</p>
-            <p><a href="https://github.com/v1shay/neural-lens">GitHub</a></p>
-          </div>
-        </article>
-
-        <article class="project">
-          <img src="images/other_projects/algotype.gif" alt="AlgoType demo" />
-          <div>
-            <h3>AlgoType <span class="badge">LeetCode practice</span></h3>
-            <p>Competitive-programming trainer with USACO/LeetCode questions, custom syntax, and global leaderboards</p>
-            <p><a href="https://algo-type.vercel.app">Website</a></p>
-          </div>
-        </article>
-
-        <article class="project">
-          <img src="images/other_projects/Convert%20to%20GIF%20project.gif" alt="Freelance development demo" />
-          <div>
-            <h3>Freelance Development <span class="badge">production work</span></h3>
-            <p>Local-business storefront work across Next.js, driving 100%+ increased traffic</p>
-            <p><a href="https://taquizas-chapala.vercel.app">Website</a></p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- page 4: outreach -->
-    <section id="outreach">
-      <h2>Outreach</h2>
-      <div class="timeline">
-        <article class="entry">
-          <img src="images/novastem2.jpeg" alt="NovaSTEM workshop" />
-          <div>
-            <h3>NovaSTEM</h3>
-            <p>Founded STEM outreach partnering with Good Samaritan Preschool and Sunday Friends, delivering hands-on workshops to 350+ students</p>
-            <p><a href="https://novastem.vercel.app">Website</a></p>
-          </div>
-        </article>
-
-        <article class="entry">
-          <img src="images/art.jpeg" alt="Uplift Art Foundation cards" />
-          <div>
-            <h3>Uplift Art Foundation</h3>
-            <p>Led art outreach across 10 Bay Area schools; created and delivered 5,000+ cards for pediatric patients with national partner CFHK</p>
-            <p><a href="https://uplift-art.vercel.app">Website</a></p>
-          </div>
-        </article>
-
-        <article class="entry">
-          <img src="images/image%20copy%2015.png" alt="CS4All visual" />
-          <div>
-            <h3>CS4All Tutor</h3>
-            <p>Mentored students in foundational computer-science concepts through hands-on coding and problem-solving sessions</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-  <!-- page 5: notes / for fun -->
-<section id="notes">
-  <h2>notes</h2>
-  <div class="fun-grid">
-    <div class="fun-item">
-      <img src="images/other_projects/fbla_new.png" alt="FBLA" />
-      <h3>FBLA</h3>
-      <p>I competed in Network Design at the Future Business Leaders of America State Conference in Anaheim</p>
-    </div>
-    <div class="fun-item">
-      <img src="images/other_projects/image copy 2.png" alt="GitHub Developer Program" />
-      <h3>GitHub Developer Program</h3>
-      <p>I was accepted into the GitHub Developer Program for building GitHub Apps and integrations</p>
-    </div>
-    <div class="fun-item">
-      <img src="images/tkd2.jpeg" alt="Taekwondo" />
-      <h3>Taekwondo Mentor</h3>
-      <p>I earned my 1st-degree black belt under World Taekwondo and mentor younger students in technique and sparring</p>
-    </div>
-    <div class="fun-item">
-      <img src="images/basketballteam.jpeg" alt="Athletes4Others" />
-      <h3>Athletes4Others Coach</h3>
-      <p>I coach basketball for students at local elementary schools in the Bay Area</p>
-    </div>
-    <div class="fun-item">
-      <img src="images/other_projects/obsidian.png" alt="Second brain" />
-      <h3>Second brain</h3>
-      <p>I'm interested in tools like Obsidian as persistent context layers for AI agents</p>
-    </div>
-    <div class="fun-item">
-      <img src="images/IMG_6976.jpeg" alt="Sports" />
-      <h3>Sports</h3>
-      <p>I played for the Lynbrook High School boys basketball team, with a .750 win percentage across 24 games</p>
-    </div>
-    <div class="fun-item">
-      <img src="images/other_projects/spotify.png" alt="Music" />
-      <h3>Music</h3>
-      <p>I love listening to and making Spotify playlists, including 4 public playlists with 90+ likes</p>
-    </div>
-    <div class="fun-item">
-      <img src="images/other_projects/image copy 3.png" alt="Languages" />
-      <h3>Languages</h3>
-      <p>I speak English, Hindi, and conversational Spanish</p>
-    </div>
-  </div>
-</section>
-
-    <!-- page 6: contact / GitHub -->
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>Links and external pages.</p>
-      <div class="contact-list">
-        <a href="https://github.com/v1shay">GitHub</a>
-        <a href="mailto:v.agrwl17@gmail.com">Email</a>
-        <a href="https://devpost.com/v1shay/challenges">Hackathon portfolio</a>
-        <a href="https://docs.google.com/document/d/17_go6arOIviQ2X_M8XTwY88k7OC9EA-g/edit">Resume</a>
-        <a href="https://novastem.vercel.app">NovaSTEM</a>
-        <a href="https://uplift-art.vercel.app">Uplift Art Foundation</a>
-        <a href="https://www.lynbrookvikings.com/player/vishay-agarwal/">Basketball</a>
-        <a href="https://open.spotify.com/user/31rmdnittbsvohipqn7zdcjbj6ri">Spotify</a>
-      </div>
-      <p class="footer-note">hand-written in HTML</p>
-    </section>
-  </main>
-</body>
+  </body>
 </html>
