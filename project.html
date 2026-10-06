@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Project — Vishay Agarwal</title>
 <script>(function(){try{var m=localStorage.getItem("v1shay-theme")||"auto";document.documentElement.dataset.themeMode=m;if(m==="light"||m==="dark")document.documentElement.dataset.theme=m;}catch(e){}})();</script>
-<link rel="stylesheet" href="./project.css?v=20260912c" />
+<link rel="stylesheet" href="./project.css?v=20261005d" />
 </head>
 <body>
 <a class="corner-link back-link" href="./">← back</a>
@@ -44,14 +44,15 @@
 
   function fitArt(){
     var art=document.getElementById("project-art");
-    art.style.fontSize="17px";
+    var base=14;
+    art.style.fontSize=base+"px";
     requestAnimationFrame(function(){
       var w=art.scrollWidth,h=art.scrollHeight;
       if(!w||!h)return;
-      var maxW=Math.min(window.innerWidth*.92,1280);
-      var maxH=window.innerHeight*(window.innerWidth<760?.58:.66);
+      var maxW=Math.min(window.innerWidth*.80,1080);
+      var maxH=window.innerHeight*(window.innerWidth<760?.48:.54);
       var scale=Math.min(maxW/w,maxH/h,1);
-      art.style.fontSize=Math.max(5.5,17*scale)+"px";
+      art.style.fontSize=Math.max(5.5,base*scale)+"px";
     });
   }
 
@@ -73,7 +74,7 @@
   }
 
   var s=document.createElement("script");
-  s.src="./project-data/"+key+".js?v=20260912c";
+  s.src="./project-data/"+key+".js?v=20261005d";
   s.onload=show;
   s.onerror=function(){document.getElementById("project-art").textContent="Project data unavailable.";};
   document.body.appendChild(s);
