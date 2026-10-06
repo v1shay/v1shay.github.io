@@ -7,9 +7,9 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;min-height:100%;background:var(--bg);color:var(--fg)}
 body{min-height:100vh;font-family:NTypeMono,Courier,monospace;overflow:auto;transition:background-color 120ms linear,color 120ms linear}
-.project-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:48px 24px 44px}
+.project-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:48px 24px 44px}
 .ascii-stage{width:100%;display:flex;align-items:center;justify-content:center;overflow:visible}
-.ascii{display:block;flex:none;white-space:pre;font-family:Braille,"Apple Braille","Segoe UI Symbol",NTypeMono,monospace;font-size:17px;line-height:1;letter-spacing:0;font-variant-ligatures:none;color:var(--fg);opacity:.96;text-align:left;background:transparent;transform:none}
+.ascii{display:block;flex:none;white-space:pre;font-family:Braille,"Apple Braille","Segoe UI Symbol",monospace;font-size:14px;line-height:1;letter-spacing:-.15em;font-kerning:none;font-variant-ligatures:none;font-feature-settings:"kern" 0;color:var(--fg);opacity:.96;text-align:left;background:transparent;transform:none}
 .project-meta{width:min(800px,90vw);text-align:center}
 .project-meta h1{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;font-size:18px;line-height:1.2;font-weight:500;letter-spacing:-.01em;margin-bottom:7px}
 .project-meta p{font-size:14px;line-height:1.5;color:var(--muted);margin:0 auto;max-width:720px}
